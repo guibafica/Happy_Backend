@@ -1,6 +1,9 @@
 import express from 'express';
+import { getRepository } from 'typeorm';
+import Orphanage from './models/Orphanage';
 
 import './database/connecton';
+import Orphanage from './models/Orphanage';
 
 const app = express();
 
@@ -10,7 +13,37 @@ app.get('/', (req, res) => {
   return res.status(200).json({ message: 'Hello World' });
 });
 
-app.listen(3333);
+app.post('/orphanages', async (req, res) => {
+  const {
+    name,
+    latitude,
+    longitude,
+    about,
+    instructions, 
+    opening_hours,
+    open_on_weekends
+  } = req.body;
+
+  const orphanagesRepository = getRepository(Orphanage);
+
+  const orphanage = orphanagesRepository.create({
+    name,
+    latitude,
+    longitude,
+    about,
+    instructions, 
+    opening_hours,
+    open_on_weekends
+  });
+
+  await orphanagesRepository.save(orphanage);
+
+  return res.status(201).json(orphanage);
+});
+
+app.listen(3333, () => {
+  console.log('Server started')
+});
 
 /*
  Formas de manipulação de banco de dados:

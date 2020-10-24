@@ -17,5 +17,3 @@ routes.get('/orphanages', OrphanagesController.index);
 routes.get('/orphanages/:id', OrphanagesController.show);
 
 export default routes;
-
-// 1:18
